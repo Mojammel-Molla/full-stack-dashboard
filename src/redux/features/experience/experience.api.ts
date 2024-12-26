@@ -11,7 +11,7 @@ const experienceApi = baseApi.injectEndpoints({
         }
 
         return {
-          url: '/experience',
+          url: '/experiences',
           method: 'GET',
           params,
         };
@@ -21,28 +21,28 @@ const experienceApi = baseApi.injectEndpoints({
     fetchExperienceById: builder.query({
       query: (id: string) => {
         return {
-          url: `/experience/${id}`,
+          url: `/experiences/${id}`,
           method: 'GET',
         };
       },
       providesTags: (_, __, id) => [{ type: 'experience', id }],
     }),
     createExperience: builder.mutation({
-      query: (ExperienceData) => {
+      query: (experienceData) => {
         return {
-          url: '/experience',
+          url: '/experiences',
           method: 'POST',
-          body: ExperienceData,
+          body: experienceData,
         };
       },
       invalidatesTags: ['experience'],
     }),
     updateExperience: builder.mutation({
-      query: ({ formData, id }) => {
+      query: ({ data, id }) => {
         return {
-          url: `/experience/${id}`,
+          url: `/experiences/${id}`,
           method: 'PUT',
-          body: formData,
+          body: data,
         };
       },
       invalidatesTags: ['experience'],
@@ -50,7 +50,7 @@ const experienceApi = baseApi.injectEndpoints({
     deleteExperience: builder.mutation({
       query: (id) => {
         return {
-          url: `/experience/${id}`,
+          url: `/experiences/${id}`,
           method: 'DELETE',
         };
       },
