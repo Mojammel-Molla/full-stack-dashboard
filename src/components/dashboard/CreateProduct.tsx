@@ -10,18 +10,19 @@ import HInput from '../form/HInput';
 import HForm from '../form/HForm';
 import { FieldValues } from 'react-hook-form';
 import HFile from '../form/HFile';
-import { useFetchAllCategoriesQuery } from '@/redux/features/categories/categories.api';
-import { TCategory } from '@/types';
-import HSelect from '../form/HSelect';
-import { TProduct } from '@/types/products.types';
 import HTextarea from '../form/HTextarea';
+import { TProject, TSkill } from '@/types';
+import TTextEditor from '../form/TextEditor/TTextEditor';
+import { X } from 'lucide-react';
+import HMSelect from '../form/HMSelect';
+import { useFetchAllSkillsQuery } from '@/redux/features/skills/skills.api';
 
 type TCreateProduct = {
   title: string;
   open: boolean;
   setOpen: (key: boolean) => void;
   onSubmit: (data: FieldValues) => void;
-  product?: TProduct | undefined;
+  project?: TProject | undefined;
 };
 
 const CreateProduct = ({
@@ -29,75 +30,86 @@ const CreateProduct = ({
   open,
   setOpen,
   onSubmit,
-  product,
+  project,
 }: TCreateProduct) => {
-  const {
-    data: categories,
-    isLoading: cLoading,
-    isFetching: cFetching,
-  } = useFetchAllCategoriesQuery([]);
-
-  const categoryOptions: { value: string; label: string }[] =
-    categories?.data?.map((category: TCategory) => ({
-      value: category?.id,
-      label: category?.name,
-    }));
-
   const formData = {
-    name: product?.name,
-    price: product?.price,
-    images: product?.images,
-    quantity: product?.quantity,
-    description: product?.description,
-    discount: product?.discount,
-    categories: (product?.categories as TCategory[])?.[0]?.id,
+    title: project?.title,
+    description: project?.description,
+    overview: project?.overview,
+    live: project?.links?.live,
+    client: project?.links?.client,
+    server: project?.links?.server,
+    image: project?.image,
+    skills: project?.skills?.map(skill=>(skill?._id)),
   };
+  const { data: skills, isLoading } = useFetchAllSkillsQuery([]);
+  const skillOptions = skills?.data?.map((skill: TSkill) => ({
+    value: skill?._id,
+    label: skill?.name,
+  }));
+
+  if (isLoading) {
+    return;
+  }
 
   return (
     <Dialog open={open}>
       <DialogContent className="max-w-screen-md">
         <DialogHeader>
           <DialogTitle className="mb-5 border-b border-b-athens-gray-100 pb-5">
-            {title}
+            <div className="flex items-center justify-between">
+              <span className="block">{title}</span>
+              <Button
+                onClick={() => setOpen(false)}
+                size="icon"
+                variant="light"
+                className="rounded-md"
+              >
+                <X />
+              </Button>
+            </div>
           </DialogTitle>
           <DialogDescription>
-            <HForm onSubmit={onSubmit} defaultValues={product ? formData : {}}>
+            <HForm onSubmit={onSubmit} defaultValues={project ? formData : {}}>
               <div className="space-y-5">
                 <div>
                   <div className="space-y-5">
-                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-                      <HInput placeholder="Product Name" name="name" />
-                      <HInput
-                        placeholder="Product Price"
-                        type="number"
-                        name="price"
-                      />
-                    </div>
-                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-                      <HInput
-                        placeholder="Product Quantity"
-                        type="number"
-                        name="quantity"
-                      />
-                      <HInput
-                        placeholder="Product Discount"
-                        type="number"
-                        name="discount"
-                      />
-                    </div>
-                    <HSelect
-                      disabled={cFetching || cLoading}
-                      options={categoryOptions}
-                      placeholder="Categories"
-                      name="categories"
+                    <HInput
+                      label="Project Title"
+                      placeholder="Project title"
+                      name="title"
+                    />
+                    <HMSelect
+                      isDisabled={isLoading}
+                      name="skills"
+                      label="Skills"
+                      options={skillOptions}
+                    />
+                    <HInput
+                      label="Client"
+                      placeholder="Client GitHub repository"
+                      type="text"
+                      name="client"
+                    />
+                    <HInput
+                      label="Server"
+                      placeholder="Server GitHub repository"
+                      type="text"
+                      name="server"
+                    />
+                    <HInput
+                      label="Live"
+                      placeholder="Live site link"
+                      type="text"
+                      name="live"
                     />
                     <HTextarea
-                      required
-                      placeholder="Write about yourself"
+                      label="Description"
                       name="description"
-                      rows={7}
+                      placeholder="Project short description"
                     />
-                    <HFile name="images" />
+                    <TTextEditor name="overview" />
+                    <HFile name="image" label="Project Image" />
                   </div>
                 </div>
                 <div className="flex items-center gap-2">

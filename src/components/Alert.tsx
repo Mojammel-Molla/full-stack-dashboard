@@ -1,6 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
 import { TriangleAlert } from 'lucide-react';
 import { Button } from './ui/button';
 
@@ -12,7 +18,13 @@ type AlertProps = {
   open: boolean;
 };
 
-const Alert: React.FC<AlertProps> = ({ title, message, onConfirm, onCancel, open }) => {
+const Alert: React.FC<AlertProps> = ({
+  title,
+  message,
+  onConfirm,
+  onCancel,
+  open,
+}) => {
   if (!open) return null;
 
   return ReactDOM.createPortal(
@@ -32,7 +44,7 @@ const Alert: React.FC<AlertProps> = ({ title, message, onConfirm, onCancel, open
             <div className="flex items-center justify-center gap-2">
               <Button
                 onClick={onCancel}
-                className="bg-slate-200 text-slate-600 hover:bg-slate-200/80 active:bg-slate-200"
+                className="border-none bg-slate-200 text-slate-600 outline-none hover:bg-slate-200/80 focus:outline-none active:bg-slate-200"
               >
                 Cancel
               </Button>
