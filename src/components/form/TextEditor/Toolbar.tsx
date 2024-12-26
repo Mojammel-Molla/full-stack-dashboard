@@ -83,6 +83,7 @@ const ToolbarButton = ({
 }: ToolbarButtonProps) => {
   return (
     <button
+      type="button"
       className="text-slate-500 transition-all hover:text-slate-800"
       onClick={() => onClick(command, editor)}
     >

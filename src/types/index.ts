@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export type TSkill = {
   _id: string; // Unique identifier
   name: string; // Skill name
@@ -26,6 +28,13 @@ export interface TProject {
   updatedAt: string;
   __v: number;
 }
+
+export type TConfig = {
+  label?: string;
+  path: string;
+  element: ReactNode;
+};
+
 
 export type TExperience = {
   _id: string;

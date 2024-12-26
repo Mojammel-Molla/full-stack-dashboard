@@ -72,6 +72,7 @@ const Blogs = () => {
   const handleSubmit: SubmitHandler<FieldValues> = async (data) => {
     const projectData = {
       title: data?.title,
+      content: data?.content,
       links: { live: data?.live, server: data?.server, client: data?.client },
       description: data?.description,
       overview: data?.overview,
@@ -93,7 +94,6 @@ const Blogs = () => {
           setOpenModal(false);
           toast.success('Blog Updated.');
         }
-        
       } else if (!blog) {
         const createdData = await createBlog(formData);
         if (createdData?.data?.success) {

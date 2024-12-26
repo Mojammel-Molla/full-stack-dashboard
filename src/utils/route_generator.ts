@@ -1,3 +1,4 @@
+
 import { TConfig } from '@/types';
 import { ReactNode } from 'react';
 type TRoute = {
