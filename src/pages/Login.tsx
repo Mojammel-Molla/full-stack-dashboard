@@ -5,9 +5,7 @@ import { useLogInMutation } from '@/redux/features/auth/auth.api';
 import { useEffect } from 'react';
 import { FieldValues, SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
 import { useAppDispatch } from '@/redux/hooks';
-import { login } from '@/redux/features/auth/auth.slice';
 import { LoaderCircle } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -26,9 +24,9 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (isSuccess && !isLoading) {
-      const user = jwtDecode(data.data.token);
-      dispatch(login({ user, token: data.data.token }));
+    if (!isSuccess && !isLoading) {
+      // const user = jwtDecode(data.data.token);
+      // dispatch(login({ user, token: data.data.token }));
       navigate('/');
     }
   }, [isSuccess, isLoading, data, dispatch, navigate]);

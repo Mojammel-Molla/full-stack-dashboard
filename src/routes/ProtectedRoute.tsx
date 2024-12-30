@@ -8,7 +8,7 @@ const ProtectedRoute = ({ children }: { children: ReactNode }): JSX.Element => {
 
   if (!token) {
     toast.error('You are not authorized.');
-    return <Navigate to="/login" />;
+    return <Navigate to="/" />;
   }
 
   return <>{children}</>;
